@@ -1,0 +1,19 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Rust build target (keep compiled release binary for instant execution if needed, ignore large intermediates)
+cyberadapt_rust/target/debug/
+cyberadapt_rust/target/x86_64-pc-windows-gnu/
+cyberadapt_rust/target/release/build/
+cyberadapt_rust/target/release/deps/
+cyberadapt_rust/target/release/incremental/
+cyberadapt_rust/target/release/.fingerprint/
+cyberadapt_rust/target/release/examples/
+cyberadapt_rust/target/.rustc_info.json
+cyberadapt_rust/target/CACHEDIR.TAG
+
+# OS artifacts
+.DS_Store
+Thumbs.db

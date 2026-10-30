@@ -1,0 +1,9 @@
+<viewsettings>
+    <scheme name="real_world">
+        <vehicles vehicleMode="0" vehicleQuality="2" vehicleSize="1.2" showBlinker="true" showLaneDirection="false"/>
+        <edges laneEdgeMode="0" laneShowBorders="true" showLinkDecals="false" showLaneDirection="false"/>
+        <background backgroundColor="0.12,0.14,0.18"/>
+    </scheme>
+    <viewport zoom="2400" x="920" y="-4.8"/>
+    <delay value="80"/>
+</viewsettings>

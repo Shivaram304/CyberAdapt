@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on 2026-10-30T14:42:50.066165+05:30 by Eclipse SUMO netconvert 1.28.0
+<netconvertConfiguration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
+
+    <input>
+        <node-files value="D:\Cyberadapt\ma_abse_ar\sumo\nodes.xml"/>
+        <edge-files value="D:\Cyberadapt\ma_abse_ar\sumo\edges.xml"/>
+    </input>
+
+    <output>
+        <output-file value="D:\Cyberadapt\ma_abse_ar\sumo\highway.net.xml"/>
+    </output>
+
+</netconvertConfiguration>
+-->
+
+<net version="1.20" junctionCornerDetail="5" limitTurnSpeed="5.50" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/net_file.xsd">
+
+    <location netOffset="0.00,0.00" convBoundary="0.00,0.00,15000.00,0.00" origBoundary="0.00,0.00,15000.00,0.00" projParameter="!"/>
+
+    <edge id="e0" from="n0" to="n1" priority="1">
+        <lane id="e0_0" index="0" speed="33.33" length="15000.00" shape="0.00,-11.20 15000.00,-11.20"/>
+        <lane id="e0_1" index="1" speed="33.33" length="15000.00" shape="0.00,-8.00 15000.00,-8.00"/>
+        <lane id="e0_2" index="2" speed="33.33" length="15000.00" shape="0.00,-4.80 15000.00,-4.80"/>
+        <lane id="e0_3" index="3" speed="33.33" length="15000.00" shape="0.00,-1.60 15000.00,-1.60"/>
+    </edge>
+
+    <junction id="n0" type="dead_end" x="0.00" y="0.00" incLanes="" intLanes="" shape="0.00,0.00 0.00,-12.80"/>
+    <junction id="n1" type="dead_end" x="15000.00" y="0.00" incLanes="e0_0 e0_1 e0_2 e0_3" intLanes="" shape="15000.00,-12.80 15000.00,0.00"/>
+
+</net>

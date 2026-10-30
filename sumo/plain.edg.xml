@@ -1,0 +1,5 @@
+[net]
+version="1.16"
+
+[edge]
+id="e0" from="n0" to="n1" priority="1" numLanes="1" speed="33.33"
