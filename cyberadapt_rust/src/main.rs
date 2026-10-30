@@ -563,8 +563,73 @@ struct BenchmarkOutput {
     fuzzy_search_us: f64,
 }
 
+#[derive(Serialize)]
+struct AttrBenchmarkRow {
+    attrs: usize,
+    setup_ms: f64,
+    keygen_ms: f64,
+    encrypt_ms: f64,
+    search_ms: f64,
+    decrypt_ms: f64,
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
+
+    if args.iter().any(|a| a == "--benchmark-attrs") {
+        let attr_counts = [5, 10, 15, 20, 25, 30];
+        let mut results = Vec::new();
+        let sample_bsm = br#"{"cmd":"SPEED_ADAPT","target_speed":14.0,"platoon_id":"PL_01"}"#;
+
+        for &n in &attr_counts {
+            // 1. Setup Phase (8 Authorities + SMBP Precomputation)
+            let t_setup = Instant::now();
+            let scheme = ProposedCyberAdaptRust::new(8);
+            let _precomp = SMBPPrecompTable::new(&scheme.g, 160);
+            let setup_ms = t_setup.elapsed().as_secs_f64() * 1000.0;
+
+            // 2. KeyGen Phase (Attribute Keys Generation)
+            let t_keygen = Instant::now();
+            let mut _user_keys = Vec::new();
+            for _ in 0..n {
+                let sk = Scalar::random();
+                let pk = scheme.g.pow(&sk);
+                _user_keys.push((sk, pk));
+            }
+            let keygen_ms = t_keygen.elapsed().as_secs_f64() * 1000.0;
+
+            // 3. Encrypt Phase (FO-Transform Encryption under n attributes)
+            let policy: Vec<String> = (1..=n).map(|i| format!("ATTR_{}", i)).collect();
+            let t_enc = Instant::now();
+            let fo_ct = scheme.fo_encrypt(sample_bsm, &policy);
+            let encrypt_ms = t_enc.elapsed().as_secs_f64() * 1000.0;
+
+            // 4. Keyword Search Phase (Fuzzy MinHash LSH Search)
+            let keywords = vec!["EMERGENCY".to_string(), "BRAKE".to_string(), "PLATOON".to_string()];
+            let sketch = minhash_sketch(&keywords, 16);
+            let q = vec!["EMERGEN_CY".to_string(), "BRAKE".to_string()];
+            let q_sketch = minhash_sketch(&q, 16);
+            let t_search = Instant::now();
+            let _found = fuzzy_search(&sketch, &q_sketch, &q, &keywords);
+            let search_ms = t_search.elapsed().as_secs_f64() * 1000.0;
+
+            // 5. Decrypt Phase (Vehicle OBU Decryption)
+            let (_pt, _rsu, obu_us) = scheme.outsourced_decrypt(&fo_ct).unwrap();
+            let decrypt_ms = obu_us / 1000.0;
+
+            results.push(AttrBenchmarkRow {
+                attrs: n,
+                setup_ms: (setup_ms * 10000.0).round() / 10000.0,
+                keygen_ms: (keygen_ms * 10000.0).round() / 10000.0,
+                encrypt_ms: (encrypt_ms * 10000.0).round() / 10000.0,
+                search_ms: (search_ms * 10000.0).round() / 10000.0,
+                decrypt_ms: (decrypt_ms * 10000.0).round() / 10000.0,
+            });
+        }
+
+        println!("{}", serde_json::to_string_pretty(&results).unwrap());
+        return;
+    }
 
     // 1. Benchmark SMBP-PreComp vs Baseline
     let base = GroupElement::generator_g();
