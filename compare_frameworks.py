@@ -160,7 +160,8 @@ def run_comparative_evaluation():
     print("\n" + "#" * 80)
     print("  [TEST 5] NATIVE RUST CRYPTOGRAPHIC CORE ENGINE (SLIDE 22 TECH STACK)")
     print("#" * 80)
-    exe_path = os.path.join(CUR_DIR, 'cyberadapt_rust', 'target', 'release', 'cyberadapt_rust.exe')
+    exe_name = 'cyberadapt_rust.exe' if sys.platform == 'win32' else 'cyberadapt_rust'
+    exe_path = os.path.join(CUR_DIR, 'cyberadapt_rust', 'target', 'release', exe_name)
     rust_ok = False
     if os.path.exists(exe_path):
         try:
